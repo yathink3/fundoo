@@ -102,13 +102,18 @@ class Api extends REST_Controller
         if (!empty($userData['email'])) {
             if ($id = $this->isEmailPresent($userData['email'])) {
                 $token = JWT::encode($id, "secure_key");
-                $this->sendMail();
-                $this->response([
-                    'status' => TRUE,
-                    'token' => $token,
-                    'message' => "token generated"
-                ], REST_Controller::HTTP_OK);
-                // JWT::decode(token,secure_key,true) ;
+                if ($this->sendMail('http://localhost/fundoo/#/resetPassword/?token=' . $token)) {
+                    $this->response([
+                        'status' => TRUE,
+                        'message' => "token generated && email sent successfully"
+                    ], REST_Controller::HTTP_OK);
+                } else {
+                    $this->response([
+                        'status' => FALSE,
+                        'message' => "token generated && email not sent"
+                    ], REST_Controller::HTTP_BAD_REQUEST);
+                }
+                //  JWT::decode($token,"secure_key",true) ;
             } else {
                 $this->response([
                     'status' => FALSE,
@@ -122,6 +127,36 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    public function reset_get($token)
+    {
+        try {
+            $id = JWT::decode($token, "secure_key", true);
+            $users = $this->user->getRows($id);
+            //check if the user data exists
+            if (!empty($users)) {
+                //set the response and exit
+                $this->response([
+                    'status' => TRUE,
+                    'data' => $users
+                ], REST_Controller::HTTP_OK);
+            } else {
+                //set the response and exit
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'unknown person'
+                ], REST_Controller::HTTP_NOT_FOUND);
+            }
+        } catch (Exception $e) {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'pls check once'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+        //returns all rows if the id parameter doesn't exist,
+        //otherwise single row will be returned
+
+    }
+
     public function user_get($id = 0)
     {
         //returns all rows if the id parameter doesn't exist,
@@ -251,37 +286,35 @@ class Api extends REST_Controller
         }
         return false;
     }
-    function sendMail()
+    function sendMail($message)
     {
-        $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'www.fundoo.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'manoj.mk.24.mk@gmail.com', // change it to yours
-            'smtp_pass' => '123manoj24$', // change it to yours
-            // 'mailtype' => 'html',
-            // 'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
-        );
-
-        $message = 'dfghfvg';
+        //Load email library
         $this->load->library('email');
+
+        //SMTP & mail configuration
+        $config = array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'manoj.mk.24.mk@gmail.com',
+            'smtp_pass' => '123manoj24$',
+            'mailtype'  => 'html',
+            'charset'   => 'utf-8'
+        );
         $this->email->initialize($config);
+        $this->email->set_mailtype("html");
+        $htmlContent = '<h1>please click below link to reset your password</h1>';
+        $htmlContent .= '<p>' . $message . '</p>';
         $this->email->set_newline("\r\n");
-        $this->email->from('xxx@gmail.com','identification'); // change it to yours
+        $this->email->from('xxx@gmail.com', 'www.fundoo.com'); // change it to yours
         $this->email->to('yathink3@gmail.com'); // change it to yours
-        $this->email->subject('Resume from JobsBuddy for your Job posting');
-        $this->email->message($message);
+        $this->email->subject('for recovering email');
+        $this->email->message($htmlContent);
+        //Send email
         if ($this->email->send()) {
-            echo 'Email sent.';
+            return true;
         } else {
-            // $this->response([
-            //     'status' => FALSE,
-            //     'message' => "an error encountered."
-            // ], REST_Controller::HTTP_BAD_REQUEST);
-
-
-            // show_error($this->email->print_debugger());
+            return false;
         }
     }
 }

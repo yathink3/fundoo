@@ -14,7 +14,7 @@ app.service("loginService", function ($http, $location) {
 			}).then(function successCallBack(response) {
 					console.log("Login successfull", response);
 					$scope.message = response.data.message;
-					$location.path('#/success')
+					$location.url('success')
 
 				},
 				function errorCallBack(error) {

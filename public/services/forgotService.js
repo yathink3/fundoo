@@ -13,13 +13,12 @@ app.service("forgotService", function ($http, $location) {
 				data: data
 			}).then(function successCallBack(response) {
 					console.log("token generated successfull", response);
-					// $scope.message = response.data.message;
-					$location.path('#/success');
+					$scope.message = response.data.message;
 
 				},
 				function errorCallBack(error) {
-					// console.log("forgot failed", error);
-					// $scope.message = error.data.message;
+					console.log("forgot failed", error);
+					$scope.message = error.data.message;
 				}
 			)
 			console.log('in service ', data);

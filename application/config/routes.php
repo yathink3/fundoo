@@ -59,5 +59,7 @@ $route['templates/(:any)'] = "templates/view/$1";
 $route['user/login'] = 'api/login';
 $route['user/registration'] = 'api/registration';
 $route['user/forgot'] = 'api/forgot';
-$route['user/userData'] = 'api/user';
-$route['user/userData/(:num)'] = 'api/user/$1';
+$route['user/forgotPassword/(:any)'] = 'api/reset/$1';
+
+// $route['user/userData'] = 'api/user';
+// $route['user/userData/(:num)'] = 'api/user/$1';

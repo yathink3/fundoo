@@ -17,9 +17,13 @@ app.config(function ($routeProvider) {
 		.when('/success', {
 			templateUrl: "templates/success.html",
 		})
-
-		.otherwise({
-			redirectTo: "/"
+		.when('/resetPassword', {
+			// templateUrl: "templates/resetPassword.html",
+			controller: "controllerReset"
 		})
+
+	// .otherwise({
+	// 	redirectTo: "/"
+	// })
 
 });
