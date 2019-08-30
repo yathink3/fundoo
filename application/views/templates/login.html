@@ -1,0 +1,23 @@
+<div id="body" ng-controller="controllerLogin">
+	<div id="container">
+		<h1>User Login</h1>
+		<div id="body">
+				<div id="body">
+					<label>Enter your email</label>
+					<input id="code" ng-model="email"  type="email" name="email" value="" required/>
+
+				</div>
+				<div id="body">
+					<label>Enter password</label>
+					<input id="code" ng-model="password" type="password" name="password" value="" required />
+				</div>
+				<div id="body">
+					<input id="code" ng-click="login()" type="submit" name="login" value="Login" />
+					<a href="#/register"><input id="code" type="button" name="register" value="Regiser" /></a>{{message}}
+					<a href="#/forgot"><input id="code" type="button" name="forgot" value="forgot" /></a>
+				</div>
+				
+		</div>
+	</div>
+	
+</div>

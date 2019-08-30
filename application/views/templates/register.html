@@ -1,0 +1,28 @@
+<div id="body" ng-controller="controllerRegister">
+	<div id="container">
+		<h1>User Registration</h1>
+		<div id="body">
+				<div id="body">
+					<label>Enter your firstname</label>
+					<input class="code" ng-model="firstname" type="text" name="firstname" value="" />
+				</div>
+				<div id="body">
+					<label>Enter your lastname</label>
+					<input class="code" ng-model="lastname" type="text" name="lastname" value="" />
+				</div>
+				<div id="body">
+					<label>Enter your email</label>
+					<input class="code" ng-model="email" type="text" name="email" value="" />
+				</div>
+				<div id="body">
+					<label>Enter password</label>
+					<input class="code" ng-model="password" type="password" name="password" value="" />
+				</div>
+				<div id="body">
+					<input class="code" ng-click="register()" type="submit" name="register" value="Register" />{{message}}
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
