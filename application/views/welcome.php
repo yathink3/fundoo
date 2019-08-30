@@ -12,7 +12,7 @@
     <script src="public/controller/registerController.js"></script>
     <script src="public/services/forgotService.js"></script>
     <script src="public/controller/forgotController.js"></script>
-    <script src="public/services/resetService.js"></script>
+    <script src="public/services/resetServices.js"></script>
     <script src="public/controller/resetController.js"></script>
 </head>
 

@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require APPPATH . 'services/UserService.php';
-class UserService extends CI_Controller
+class Service
 {
     public function __construct()
     {
-        parent::__construct();
         $this->load->model('user');
     }
     public function signin($userData, $id)
@@ -15,15 +13,17 @@ class UserService extends CI_Controller
             return $users;
         else  return false;
     }
-    public function signup($userData){
+    public function signup($userData)
+    {
         $userData['password'] = md5($userData['password']);
         $insert = $this->user->insert($userData);
-        if($insert) return true;
+        if ($insert) return true;
         else return false;
     }
-    public function get_users($id){
+    public function get_users($id)
+    {
         $users = $this->user->getRows($id);
-        if(!empty($users)) return $users;
+        if (!empty($users)) return $users;
         else return false;
     }
     public function isEmailPresent($email, $id = 0)

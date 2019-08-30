@@ -18,12 +18,12 @@ app.config(function ($routeProvider) {
 			templateUrl: "templates/success.html",
 		})
 		.when('/resetPassword', {
-			// templateUrl: "templates/resetPassword.html",
+			templateUrl: "templates/resetPassword.html",
 			controller: "controllerReset"
 		})
 
-	// .otherwise({
-	// 	redirectTo: "/"
-	// })
+		.otherwise({
+			redirectTo: "/"
+		})
 
 });

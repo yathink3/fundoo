@@ -4,20 +4,20 @@
  */
 
 
-app.service("resetPasswordService", function ($scope, $http, $location) {
+app.service("resetPasswordService", function ($http, $location) {
 	try {
 		this.resetPassword = function (data, $scope) {
-			console.log('http://localhost/fundoo/user/forgotPassword/' + $scope.token);
 			$http({
-				method: 'GET',
-				url: `'http://localhost/fundoo/user/forgotPassword/' + $scope.token`,
+				method: 'POST',
+				url: 'user/forgotPassword/' + $scope.token,
 				data: data
 			}).then(function successCallBack(response) {
-					// $scope.result="password changed";
+					$scope.message = response.data.message;
 					// $location.path('/login');
 					console.log("update password", response);
 				},
 				function errorCallBack(response) {
+					$scope.message = response.data.message;
 					// $scope.result="password mismatched";
 					console.log("Password is not update", response);
 				}

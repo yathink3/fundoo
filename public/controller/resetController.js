@@ -11,7 +11,7 @@ app.controller('controllerReset', function ($scope, $location, resetPasswordServ
 		}
 		$scope.resetPassword = () => {
 			if ($scope.password != $scope.cpassword) {
-				$scope.data.message = "confirmPassword is not matching";
+				$scope.message = "confirmPassword is not matching";
 			} else {
 				var data = {
 					"password": $scope.password,

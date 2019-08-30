@@ -1,15 +1,14 @@
 <?php
 require APPPATH . 'libraries/REST_Controller.php';
-
 class Api extends REST_Controller
 {
     public function __construct()
     {
         parent::__construct();
 
-        //load user model
+        //load user models
         $this->load->model('user');
-        $this->load->library('session');
+        $this->load->library('session', 'service');
         $this->load->helper('url');
     }
 
@@ -97,6 +96,7 @@ class Api extends REST_Controller
 
     public function forgot_post()
     {
+
         $userData = array();
         $userData['email'] = $this->post('email');
         if (!empty($userData['email'])) {
@@ -113,7 +113,6 @@ class Api extends REST_Controller
                         'message' => "token generated && email not sent"
                     ], REST_Controller::HTTP_BAD_REQUEST);
                 }
-                //  JWT::decode($token,"secure_key",true) ;
             } else {
                 $this->response([
                     'status' => FALSE,
@@ -127,18 +126,32 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function reset_get($token)
+    public function reset_post($token)
     {
         try {
             $id = JWT::decode($token, "secure_key", true);
             $users = $this->user->getRows($id);
             //check if the user data exists
             if (!empty($users)) {
-                //set the response and exit
-                $this->response([
-                    'status' => TRUE,
-                    'data' => $users
-                ], REST_Controller::HTTP_OK);
+                $userData = array();
+                $userData['password'] = $this->post('password');
+                //update user data
+                $userData['password'] = md5($userData['password']);
+                $update = $this->user->update($userData, $id);
+                //check if the user data updated
+                if ($update) {
+                    //set the response and exit
+                    $this->response([
+                        'status' => TRUE,
+                        'message' => 'password has been updated successfully.'
+                    ], REST_Controller::HTTP_OK);
+                } else {
+                    //set the response and exit
+                    $this->response([
+                        'status' => FALSE,
+                        'message' => "Some problems occurred, please try again."
+                    ], REST_Controller::HTTP_BAD_REQUEST);
+                }
             } else {
                 //set the response and exit
                 $this->response([
@@ -149,7 +162,7 @@ class Api extends REST_Controller
         } catch (Exception $e) {
             $this->response([
                 'status' => FALSE,
-                'message' => 'pls check once'
+                'message' => 'unknown person'
             ], REST_Controller::HTTP_NOT_FOUND);
         }
         //returns all rows if the id parameter doesn't exist,

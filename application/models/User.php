@@ -71,14 +71,4 @@ class User extends CI_Model
             return true;
         else return false;
     }
-
-    public function isEmailPresent($email, $id = 0)
-    {
-        $users = $this->getRows();
-        foreach ($users as $user) {
-            if ($user['email'] == $email && $user['id'] != $id)
-                return $user['id'];
-        }
-        return false;
-    }
 }
