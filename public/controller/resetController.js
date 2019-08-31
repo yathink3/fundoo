@@ -1,6 +1,6 @@
 /**
  * @description:to validate and the pass the controller to service
- * @param:$scope,registerpasswordService,location
+ * @param:$scope,resetpasswordService,location
  */
 
 app.controller('controllerReset', function ($scope, $location, resetPasswordService) {
