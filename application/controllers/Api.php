@@ -1,7 +1,21 @@
 <?php
+
+/********************************************************************************************************************
+ * @Execution : default node : cmd> api.php
+ * @Purpose : rest api for fundoo app
+ * @description: Create an Rest Api in codeigniter
+ * @overview:api for login,signup,delete,passwordreset, etc
+ * @author : yathin k <yathink3@gmail.com>
+ * @version : 1.0
+ * @since : 31-aug-2019
+ *******************************************************************************************************************/
 require APPPATH . 'libraries/REST_Controller.php';
+/**
+ * class api which extends from REST_Controller
+ */
 class Api extends REST_Controller
 {
+    private $service = '';
     public function __construct()
     {
         parent::__construct();
@@ -13,7 +27,11 @@ class Api extends REST_Controller
     }
 
 
-
+    /**
+     * @method:post
+     * @description:login is used to login user
+     * @return :response 
+     */
 
     public function login_post()
     {
@@ -49,7 +67,11 @@ class Api extends REST_Controller
         }
     }
 
-
+    /**
+     * @method post
+     * @description:registration is used to signup user
+     * @return :response 
+     */
 
 
     public function registration_post()
@@ -93,7 +115,11 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-
+    /**
+     * @method :post
+     * @description:forgot is used to create token when user enters the mailid
+     * @return :response 
+     */
     public function forgot_post()
     {
 
@@ -126,6 +152,14 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+
+
+
+    /**
+     * @method :post
+     * @description:reset password
+     * @return :response 
+     */
     public function reset_post($token)
     {
         try {
@@ -165,11 +199,12 @@ class Api extends REST_Controller
                 'message' => 'unknown person'
             ], REST_Controller::HTTP_NOT_FOUND);
         }
-        //returns all rows if the id parameter doesn't exist,
-        //otherwise single row will be returned
-
     }
-
+    /**
+     * @method :get
+     * @description:userdata to get
+     * @return :response 
+     */
     public function user_get($id = 0)
     {
         //returns all rows if the id parameter doesn't exist,
@@ -191,7 +226,11 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
-
+    /**
+     * @method :put
+     * @description:user_to edit
+     * @return :response 
+     */
 
     public function user_put($id = 0)
     {
@@ -253,7 +292,11 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-
+    /**
+     * @method :delete
+     * @description:user_to delte
+     * @return :response 
+     */
     public function user_delete($id = 0)
     {
         if ($id) {
@@ -290,6 +333,11 @@ class Api extends REST_Controller
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    /**
+     * @param: $email,$id
+     * @description:isemailpresent to check wheather the email is present or not
+     * @return :true or false
+     */
     public function isEmailPresent($email, $id = 0)
     {
         $users = $this->user->getRows();
@@ -299,6 +347,11 @@ class Api extends REST_Controller
         }
         return false;
     }
+    /**
+     * @param: $message
+     * @description:sendmail will send email 
+     * @return :true or false
+     */
     function sendMail($message)
     {
         //Load email library
